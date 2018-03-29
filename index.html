@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Magyar stadionok</title>
-
+  <title>Külképviseleti Szavazóhelyek</title>
+  <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-beta.2/leaflet.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.0-beta.2/leaflet.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,21 +23,12 @@
 
     var map = L.map('map', { center: latlng, zoom: 1, layers: [tiles] });
 
-    var markerList = [];
-
     function reloadMarkers() {
-      markerList = [];
-
       addressPoints.forEach(function(point) {
-        var marker = L.marker(L.latLng(point.lat, point.lon), { title: point.name });
-        marker.on('click', function() { window.open("http://www.magyarfutball.hu/hu/stadion/"+point.id,'_blank'); })
-        markerList.push(marker);
+        var loc = point.geometry.location;
+        var marker = L.marker(L.latLng(loc.lat, loc.lng), { title: point.formatted_address });
+        marker.addTo(map)
       });
-
-      var markers = L.markerClusterGroup();
-      markers.addLayers(markerList);
-      map.addLayer(markers);
-      map.fitBounds(markers.getBounds());
     }
     reloadMarkers();
   </script>
